@@ -10,7 +10,7 @@ setuptools.setup(
     description='Return the file extension for a mimetype on Linux',
     license='MIT',
     keywords='mime,extension,cli',
-    url='',
+    url='https://github.com/talwrii/mime-extension',
     packages=["mime_extension"],
     long_description=open('README.md').read(),
     entry_points={
