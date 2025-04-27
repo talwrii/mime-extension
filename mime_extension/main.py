@@ -13,24 +13,24 @@ def remove_ext(path):
 
 def load_extensions():
     extensions = {}
-    mime_base = Path("/usr/share/mime")
-    for base, _dirs, names in mime_base.walk():
-        for name in names:
-            path = base / name
-            mime_type = str(remove_ext(path).relative_to(mime_base))
-            _, ext = os.path.splitext(path)
+    for mime_base in  [Path("/usr/share/mime"), Path.home() / ".local" / "share" / "mime"]:
+        for base, _dirs, names in mime_base.walk():
+            for name in names:
+                path = base / name
+                mime_type = str(remove_ext(path).relative_to(mime_base))
+                _, ext = os.path.splitext(path)
 
-            if ext == ".xml":
-                mime_extensions = []
-                globs = read_globs(path)
-                for glob in globs:
-                    pattern = glob.attrib.get("pattern")
-                    if pattern:
-                        m = re.match(r'\*(\.[^.]*)$', pattern)
-                        if m:
-                            mime_extensions.append(m.group(1))
+                if ext == ".xml":
+                    mime_extensions = []
+                    globs = read_globs(path)
+                    for glob in globs:
+                        pattern = glob.attrib.get("pattern")
+                        if pattern:
+                            m = re.match(r'\*(\.[^.]*)$', pattern)
+                            if m:
+                                mime_extensions.append(m.group(1))
 
-                extensions[mime_type] = mime_extensions
+                    extensions[mime_type] = mime_extensions
     return extensions
 
 
